@@ -54,13 +54,13 @@ class GarbageCollector(object):
         if self._verbose:
             print("Removing mismatched containers...")
         registry_storage_path = "/var/lib/registry/docker/registry/v2"
-        registry_blobs = registry_storage_path + "/blobs"
+        # registry_blobs = registry_storage_path + "/blobs"
         registry_repositories = registry_storage_path + "/repositories"
         for k, v in self.mismatched.iteritems():
             # For every entry in mismatched
-            ## Formulate nessasary data
-            namespace = k.split("/")[0]
-            namespace_path = registry_repositories + "/" + namespace
+            # Formulate nessasary data
+            # namespace = k.split("/")[0]
+            # namespace_path = registry_repositories + "/" + namespace
             container_name = registry_repositories + "/" + k
             manifests = container_name + "/_manifests"
             tags = manifests + "/tags"
@@ -69,9 +69,9 @@ class GarbageCollector(object):
                 del_tag = tags + "/" + item
                 lib.rm(del_tag)
             # If no more tags, delete namespace
-            subs = glob(tags + "/*")
-            if len(subs) <= 0:
-                lib.rm(namespace_path) 
+            # subs = glob(tags + "/*")
+            # if len(subs) <= 0:
+            #     lib.rm(namespace_path)
 
     def collect(self):
         """Initiate the garbage collection."""
