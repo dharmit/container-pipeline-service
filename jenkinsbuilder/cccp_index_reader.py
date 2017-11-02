@@ -9,6 +9,10 @@ import tempfile
 
 import yaml
 
+from django.conf import settings
+if not settings.configured:
+    settings.configure()
+
 from container_pipeline.model_tmp.containers import form_Dockerfile_link, ContainerLinksModel
 from container_pipeline.models.tracking import ContainerImage
 
