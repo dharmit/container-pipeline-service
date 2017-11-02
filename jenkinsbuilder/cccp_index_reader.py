@@ -205,6 +205,8 @@ def delete_stale_projects_on_jenkins(stale_projects):
     bypasses by printing the error.
     """
     for project in stale_projects:
+        projects.replace("/", "-")
+        projects.replace(":", "-")
         myargs = ["jenkins-jobs", "delete", project]
         # print either output or error
         _, error = run_command(myargs)
@@ -258,8 +260,8 @@ def main(indexdlocation):
                 exit(1)
 
             new_projects_names.append(
-                str(project[0]["project"]["appid"]) + "-" +
-                str(project[0]["project"]["jobid"]) + "-" +
+                str(project[0]["project"]["appid"]) + "/" +
+                str(project[0]["project"]["jobid"]) + ":" +
                 str(project[0]["project"]["desired_tag"])
             )
         except Exception as e:
