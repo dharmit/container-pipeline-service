@@ -10,6 +10,7 @@ import tempfile
 import yaml
 
 from container_pipeline.model_tmp.containers import form_Dockerfile_link, ContainerLinksModel
+from container_pipeline.models.tracking import ContainerImage
 
 # Container Info Collector
 container_info = ContainerLinksModel()
@@ -219,6 +220,27 @@ def delete_stale_projects_on_jenkins(stale_projects):
     logger.info("Deleted stale projects successfully.")
 
 
+def delete_stale_projects_from_db(stale_projects):
+    """
+    This function deletes stale projects from the RPM tracking database so that
+    an update in RPM doesn't trigger a build of an image that doesn't exist in
+    the index anymore
+    """
+
+    for project in stale_projects:
+        try:
+            container_image = ContainerImage.objects.get(name=project)
+        except Exception as e:
+            logger.error("Error fetching container image to be deleted from"
+                         "database")
+            logger.critical(e)
+        else:
+            logger.info("Deleting container image and corresponding repoinfo"
+                        "{}".container_image.name)
+            container_image.repoinfo.delete()
+            container_image.delete()
+
+
 def run_command(command):
     """
     runs the given shell command using subprocess
@@ -286,6 +308,7 @@ def main(indexdlocation):
     # delete stale entries at jenkins
     logger.debug("Deleting stale projects.")
     delete_stale_projects_on_jenkins(stale_projects)
+    delete_stale_projects_from_db(stale_projects)
 
     # export the current projects_list in file
     logger.debug("Exporting current project names.")
