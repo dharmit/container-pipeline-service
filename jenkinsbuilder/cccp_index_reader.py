@@ -210,8 +210,8 @@ def delete_stale_projects_on_jenkins(stale_projects):
     bypasses by printing the error.
     """
     for project in stale_projects:
-        projects.replace("/", "-")
-        projects.replace(":", "-")
+        project.replace("/", "-")
+        project.replace(":", "-")
         myargs = ["jenkins-jobs", "delete", project]
         # print either output or error
         _, error = run_command(myargs)
