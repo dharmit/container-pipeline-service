@@ -239,9 +239,7 @@ def delete_stale_projects_from_db(stale_projects):
                          "database")
             logger.critical(e)
         else:
-            logger.info("Deleting container image and corresponding repoinfo"
-                        "{}".container_image.name)
-            container_image.repoinfo.delete()
+            logger.info("Deleting container image {}".container_image.name)
             container_image.delete()
 
 
