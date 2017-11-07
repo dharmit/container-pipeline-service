@@ -10,6 +10,7 @@ import tempfile
 import yaml
 
 from django.conf import settings
+
 if not settings.configured:
     settings.configure()
 
@@ -235,7 +236,7 @@ def delete_stale_projects_from_db(stale_projects):
         try:
             container_image = ContainerImage.objects.get(name=project)
         except Exception as e:
-            logger.error("Error fetching container image to be deleted from"
+            logger.error("Error fetching container image to be deleted from "
                          "database")
             logger.critical(e)
         else:
