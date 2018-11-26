@@ -42,15 +42,18 @@ objects:
             )
             {
                 node('ccp-pipeline-weekly') {
+                    def image_name = ""
+                    def image_name_with_registry = ""
+                    def image_tags = ""
                     if (${APP_ID} == "library"){
-                      def image_name = "${JOB_ID}:${DESIRED_TAG}"
-                      def image_name_with_registry = "${REGISTRY_URL}/${image_name}"
-                      def image_tags = "http://${REGISTRY_URL}/v2/${JOB_ID}/tags/list"
+                      image_name = "${JOB_ID}:${DESIRED_TAG}"
+                      image_name_with_registry = "${REGISTRY_URL}/${image_name}"
+                      image_tags = "http://${REGISTRY_URL}/v2/${JOB_ID}/tags/list"
 
                     } else {
-                      def image_name = "${APP_ID}/${JOB_ID}:${DESIRED_TAG}"
-                      def image_name_with_registry = "${REGISTRY_URL}/${image_name}"
-                      def image_tags = "http://${REGISTRY_URL}/v2/${APP_ID}/${JOB_ID}/tags/list"
+                      image_name = "${APP_ID}/${JOB_ID}:${DESIRED_TAG}"
+                      image_name_with_registry = "${REGISTRY_URL}/${image_name}"
+                      image_tags = "http://${REGISTRY_URL}/v2/${APP_ID}/${JOB_ID}/tags/list"
                     }
                     def slave_container_name = "jnlp_ccp-pipeline-weekly"
                     def image_in_registry = false
